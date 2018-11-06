@@ -1,40 +1,6 @@
 ---
 ################################################################################
 #
-#   Profile
-#
-#   - Different configuration profiles may be encoded here to be specified
-#   as parameters to the configtxgen tool
-#
-################################################################################
-Profiles:
-    TwoOrgsOrdererGenesis:
-        Capabilities:
-            <<: *ChannelCapabilities
-        Orderer:
-            <<: *OrdererDefaults
-            Organizations:
-                - *OrdererOrg
-
-            Capabilities:
-             <<: *OrdererCapabilities
-        Consortiums:
-            SampleConsortium:
-                Organizations:
-                    - *Org1
-                    - *Org2
-
-    TwoOrgsChannel:
-        Consortium: SampleConsortium
-        Application:
-            <<: *ApplicationDefaults
-            Organizations:
-               - *Org1
-               - *Org2
-
-
-################################################################################
-#
 #   Section: Organizations
 #
 #   - This section defines the different organizational identities which will
@@ -149,3 +115,36 @@ Capabilities:
         # Note that use of this feature with non "experimental" binaries on
         # the network may cause a fork.
         V1_1_RESOURCETREE_EXPERIMENTAL: false
+
+################################################################################
+#
+#   Profile
+#
+#   - Different configuration profiles may be encoded here to be specified
+#   as parameters to the configtxgen tool
+#
+################################################################################
+Profiles:
+    TwoOrgsOrdererGenesis:
+        Capabilities:
+            <<: *ChannelCapabilities
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+
+            Capabilities:
+             <<: *OrdererCapabilities
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                    - *Org1
+                    - *Org2
+
+    TwoOrgsChannel:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+               - *Org1
+               - *Org2
