@@ -36,7 +36,7 @@
 #############################################################################
 
 # Server's listening port (default: 7054)
-port: 7055
+port: 32210
 
 # Enables debug logging (default: false)
 debug: true

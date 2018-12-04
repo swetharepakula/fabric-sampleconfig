@@ -36,7 +36,7 @@
 #############################################################################
 
 # Server's listening port (default: 7054)
-port: 32110
+port: 32410
 
 # Enables debug logging (default: false)
 debug: true
@@ -73,14 +73,14 @@ tls:
 #############################################################################
 ca:
   # Name of this CA
-  name: CA1
+  name: CA4
   # Key file (default: ca-key.pem)
-  keyfile: /shared/crypto-config/peerOrganizations/org1.example.com/ca/key.pem
+  keyfile: /shared/crypto-config/peerOrganizations/org4.example.com/ca/key.pem
   # Certificate file (default: ca-cert.pem)
-  certfile: /shared/crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem
+  certfile: /shared/crypto-config/peerOrganizations/org4.example.com/ca/ca.org4.example.com-cert.pem
   # Chain file (default: chain-cert.pem)
   #chainfile: ca-chain.pem
-  chainfile: /shared/crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-chain.pem
+  chainfile: /shared/crypto-config/peerOrganizations/org4.example.com/ca/ca.org4.example.com-chain.pem
 
 #############################################################################
 #  The registry section controls how the fabric-ca-server does two things:
@@ -125,7 +125,7 @@ registry:
 #############################################################################
 db:
   type: sqlite3
-  datasource: /opt/fabric-ca1-server.db 
+  datasource: /opt/fabric-ca4-server.db
   tls:
       enabled: false
       certfiles:
@@ -183,7 +183,7 @@ signing:
 #  Certificate Signing Request section for generating the CA certificate
 ###########################################################################
 csr:
-   cn: fabric-ca-server-org1
+   cn: fabric-ca-server-org4
    names:
       - C: US
         ST: "North Carolina"
@@ -209,8 +209,7 @@ bccsp:
         security: 256
         filekeystore:
             # The directory used for the software file-based keystore
-            #keystore: /opt/keystore
-            keystore: /shared/crypto-config/peerOrganizations/org1.example.com/ca
+            keystore: /shared/crypto-config/peerOrganizations/org4.example.com/ca
 
 #############################################################################
 # The fabric-ca-server init and start commands support the following two
