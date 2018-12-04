@@ -23,7 +23,7 @@ Organizations:
         AdminPrincipal: Role.MEMBER
 
         AnchorPeers:
-            - Host: blockchain-org1peer1
+            - Host: blockchain-org1peer0
               Port: 30110
     - &Org2
         Name: Org2MSP
@@ -32,8 +32,28 @@ Organizations:
         AdminPrincipal: Role.MEMBER
 
         AnchorPeers:
-            - Host: blockchain-org2peer1
+            - Host: blockchain-org2peer0
               Port: 30210
+
+    - &Org3
+        Name: Org3MSP
+        ID: Org3MSP
+        MSPDir: crypto-config/peerOrganizations/org3.example.com/msp
+        AdminPrincipal: Role.MEMBER
+
+        AnchorPeers:
+            - Host: blockchain-org3peer0
+              Port: 30310
+
+    - &Org4
+        Name: Org4MSP
+        ID: Org4MSP
+        MSPDir: crypto-config/peerOrganizations/org4.example.com/msp
+        AdminPrincipal: Role.MEMBER
+
+        AnchorPeers:
+            - Host: blockchain-org4peer0
+              Port: 30410
 
 
 ################################################################################
@@ -125,7 +145,7 @@ Capabilities:
 #
 ################################################################################
 Profiles:
-    TwoOrgsOrdererGenesis:
+    FourOrgsOrdererGenesis:
         Capabilities:
             <<: *ChannelCapabilities
         Orderer:
@@ -140,11 +160,31 @@ Profiles:
                 Organizations:
                     - *Org1
                     - *Org2
+                    - *Org3
+                    - *Org4
 
-    TwoOrgsChannel:
+    FourOrgsChannel:
         Consortium: SampleConsortium
         Application:
             <<: *ApplicationDefaults
             Organizations:
                - *Org1
                - *Org2
+               - *Org3
+               - *Org4
+
+    TwoOrgs12Channel:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+               - *Org1
+               - *Org2
+
+    TwoOrgs34Channel:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+               - *Org3
+               - *Org4

@@ -83,3 +83,19 @@ PeerOrgs:
       Hostname: blockchain-org2peer{{.Index}}
     Users:
       Count: 1
+  - Name: Org3
+    Domain: org3.example.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+      Hostname: blockchain-org3peer{{.Index}}
+    Users:
+      Count: 1
+  - Name: Org4
+    Domain: org4.example.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+      Hostname: blockchain-org4peer{{.Index}}
+    Users:
+      Count: 1
