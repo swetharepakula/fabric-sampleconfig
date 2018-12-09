@@ -36,7 +36,7 @@
 #############################################################################
 
 # Server's listening port (default: 7054)
-port: 32110
+port: 32210
 
 # Enables debug logging (default: false)
 debug: true
@@ -73,7 +73,7 @@ tls:
 #############################################################################
 ca:
   # Name of this CA
-  name: CA1
+  name: CA2
   # Key file (default: ca-key.pem)
   keyfile: /shared/crypto-config/peerOrganizations/org1.example.com/ca/key.pem
   # Certificate file (default: ca-cert.pem)
@@ -107,6 +107,8 @@ registry:
        pass: adminpw
        type: client
        affiliation: ""
+       attrs:
+          admin: true
           hf.Registrar.Roles: "client,user,peer,validator,auditor,ca"
           hf.Registrar.DelegateRoles: "client,user,validator,auditor"
           hf.Revoker: true
@@ -124,7 +126,7 @@ registry:
 #############################################################################
 db:
   type: sqlite3
-  datasource: /opt/fabric-ca1-server.db 
+  datasource: /opt/fabric-ca2-server.db
   tls:
       enabled: false
       certfiles:
@@ -208,7 +210,6 @@ bccsp:
         security: 256
         filekeystore:
             # The directory used for the software file-based keystore
-            #keystore: /opt/keystore
             keystore: /shared/crypto-config/peerOrganizations/org1.example.com/ca
 
 #############################################################################
@@ -237,6 +238,6 @@ bccsp:
 #
 #############################################################################
 
-cacount: 
+cacount:
 
 cafiles:
