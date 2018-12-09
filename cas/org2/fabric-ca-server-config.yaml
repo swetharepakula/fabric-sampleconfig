@@ -36,7 +36,7 @@
 #############################################################################
 
 # Server's listening port (default: 7054)
-port: 32410
+port: 32210
 
 # Enables debug logging (default: false)
 debug: true
@@ -73,14 +73,14 @@ tls:
 #############################################################################
 ca:
   # Name of this CA
-  name: CA4
+  name: CA2
   # Key file (default: ca-key.pem)
-  keyfile: /shared/crypto-config/peerOrganizations/org4.example.com/ca/key.pem
+  keyfile: /shared/crypto-config/peerOrganizations/org2.example.com/ca/key.pem
   # Certificate file (default: ca-cert.pem)
-  certfile: /shared/crypto-config/peerOrganizations/org4.example.com/ca/ca.org4.example.com-cert.pem
+  certfile: /shared/crypto-config/peerOrganizations/org2.example.com/ca/ca.org2.example.com-cert.pem
   # Chain file (default: chain-cert.pem)
   #chainfile: ca-chain.pem
-  chainfile: /shared/crypto-config/peerOrganizations/org4.example.com/ca/ca.org4.example.com-chain.pem
+  chainfile: /shared/crypto-config/peerOrganizations/org2.example.com/ca/ca.org2.example.com-chain.pem
 
 #############################################################################
 #  The registry section controls how the fabric-ca-server does two things:
@@ -108,6 +108,7 @@ registry:
        type: client
        affiliation: ""
        attrs:
+          admin: true
           hf.Registrar.Roles: "client,user,peer,validator,auditor,ca"
           hf.Registrar.DelegateRoles: "client,user,validator,auditor"
           hf.Revoker: true
@@ -125,7 +126,7 @@ registry:
 #############################################################################
 db:
   type: sqlite3
-  datasource: /opt/fabric-ca4-server.db
+  datasource: /opt/fabric-ca2-server.db
   tls:
       enabled: false
       certfiles:
@@ -183,7 +184,7 @@ signing:
 #  Certificate Signing Request section for generating the CA certificate
 ###########################################################################
 csr:
-   cn: fabric-ca-server-org4
+   cn: fabric-ca-server-org2
    names:
       - C: US
         ST: "North Carolina"
@@ -209,7 +210,7 @@ bccsp:
         security: 256
         filekeystore:
             # The directory used for the software file-based keystore
-            keystore: /shared/crypto-config/peerOrganizations/org4.example.com/ca
+            keystore: /shared/crypto-config/peerOrganizations/org2.example.com/ca
 
 #############################################################################
 # The fabric-ca-server init and start commands support the following two
