@@ -13,15 +13,31 @@ Organizations:
         Name: OrdererOrg
         ID: OrdererMSP
         MSPDir: crypto-config/ordererOrganizations/example.com/msp
-        AdminPrincipal: Role.MEMBER
-
+        Policies:
+          Readers:
+            Type: Signature
+            Rule: "OR('OrdererMSP.member')"
+          Writers:
+            Type: Signature
+            Rule: "OR('OrdererMSP.member')"
+          Admins:
+            Type: Signature
+            Rule: "OR('OrdererMSP.member')"
 
     - &Org1
         Name: Org1MSP
         ID: Org1MSP
         MSPDir: crypto-config/peerOrganizations/org1.example.com/msp
-        AdminPrincipal: Role.MEMBER
-
+        Policies:
+          Readers:
+            Type: Signature
+            Rule: "OR('Org1MSP.member')"
+          Writers:
+            Type: Signature
+            Rule: "OR('Org1MSP.member')"
+          Admins:
+            Type: Signature
+            Rule: "OR('Org1MSP.member')"
         AnchorPeers:
             - Host: blockchain-org1peer0
               Port: 30110
@@ -29,8 +45,16 @@ Organizations:
         Name: Org2MSP
         ID: Org2MSP
         MSPDir: crypto-config/peerOrganizations/org2.example.com/msp
-        AdminPrincipal: Role.MEMBER
-
+        Policies:
+          Readers:
+            Type: Signature
+            Rule: "OR('Org2MSP.member')"
+          Writers:
+            Type: Signature
+            Rule: "OR('Org2MSP.member')"
+          Admins:
+            Type: Signature
+            Rule: "OR('Org2MSP.member')"
         AnchorPeers:
             - Host: blockchain-org2peer0
               Port: 30210
@@ -39,8 +63,16 @@ Organizations:
         Name: Org3MSP
         ID: Org3MSP
         MSPDir: crypto-config/peerOrganizations/org3.example.com/msp
-        AdminPrincipal: Role.MEMBER
-
+        Policies:
+          Readers:
+            Type: Signature
+            Rule: "OR('Org3MSP.member')"
+          Writers:
+            Type: Signature
+            Rule: "OR('Org3MSP.member')"
+          Admins:
+            Type: Signature
+            Rule: "OR('Org3MSP.member')"
         AnchorPeers:
             - Host: blockchain-org3peer0
               Port: 30310
@@ -49,48 +81,20 @@ Organizations:
         Name: Org4MSP
         ID: Org4MSP
         MSPDir: crypto-config/peerOrganizations/org4.example.com/msp
-        AdminPrincipal: Role.MEMBER
-
+        Policies:
+          Readers:
+            Type: Signature
+            Rule: "OR('Org4MSP.member')"
+          Writers:
+            Type: Signature
+            Rule: "OR('Org4MSP.member')"
+          Admins:
+            Type: Signature
+            Rule: "OR('Org4MSP.member')"
         AnchorPeers:
             - Host: blockchain-org4peer0
               Port: 30410
 
-
-################################################################################
-#
-#   SECTION: Orderer
-#
-#   - This section defines the values to encode into a config transaction or
-#   genesis block for orderer related parameters
-#
-################################################################################
-Orderer: &OrdererDefaults
-
-    OrdererType: solo
-    Addresses:
-        - blockchain-orderer:31010
-
-    BatchTimeout: 2s
-    BatchSize:
-        MaxMessageCount: 10
-        AbsoluteMaxBytes: 99 MB
-        PreferredMaxBytes: 512 KB
-    MaxChannels: 1000
-    Kafka:
-        Brokers:
-
-    Organizations:
-
-################################################################################
-#
-#   SECTION: Application
-#
-#   - This section defines the values to encode into a config transaction or
-#   genesis block for application related parameters
-#
-################################################################################
-Application: &ApplicationDefaults
-    Organizations:
 
 Capabilities:
     # Channel capabilities apply to both the orderers and the peers and must be
@@ -100,7 +104,7 @@ Capabilities:
         # determined to be desired for all orderers and peers running v1.0.x,
         # but the modification of which would cause incompatibilities.  Users
         # should leave this flag set to true.
-        V1_1: true
+        V1_3: true
     # Orderer capabilities apply only to the orderers, and may be safely
     # manipulated without concern for upgrading peers.  Set the value of the
     # capability to true to require it.
@@ -118,23 +122,103 @@ Capabilities:
         # determined to be desired for all peers running v1.0.x, but the
         # modification of which would cause incompatibilities.  Users should
         # leave this flag set to true.
-        V1_1: true
-        # V1_1_PVTDATA_EXPERIMENTAL is an Application capability to enable the
-        # private data capability.  It is only supported when using peers built
-        # with experimental build tag.  When set to true, private data
-        # collections can be configured upon chaincode instantiation and
-        # utilized within chaincode Invokes.
-        # Note that use of this feature with non "experimental" binaries on
-        # the network may cause a fork.
-        V1_1_PVTDATA_EXPERIMENTAL: false
-        # V1_1_RESOURCETREE_EXPERIMENTAL is an Application capability to enable the
-        # resources capability. Currently this is needed for defining resource based
-        # access control (RBAC). RBAC helps set fine-grained access control on system
-        # resources such as the endorser and various system chaincodes. Default is V1.0
-        # based access control based on CHANNEL_READERS and CHANNEL_WRITERS
-        # Note that use of this feature with non "experimental" binaries on
-        # the network may cause a fork.
-        V1_1_RESOURCETREE_EXPERIMENTAL: false
+        V1_3: true
+        V1_2: false
+        V1_1: false
+
+################################################################################
+#
+#   SECTION: Application
+#
+#   - This section defines the values to encode into a config transaction or
+#   genesis block for application related parameters
+#
+################################################################################
+Application: &ApplicationDefaults
+    Organizations:
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+
+    Capabilities:
+        <<: *ApplicationCapabilities
+
+################################################################################
+#
+#   SECTION: Orderer
+#
+#   - This section defines the values to encode into a config transaction or
+#   genesis block for orderer related parameters
+#
+################################################################################
+Orderer: &OrdererDefaults
+
+    OrdererType: solo
+    Addresses:
+        - blockchain-orderer:31010
+    BatchTimeout: 2s
+    BatchSize:
+        MaxMessageCount: 10
+        AbsoluteMaxBytes: 99 MB
+        PreferredMaxBytes: 512 KB
+    MaxChannels: 1000
+    Kafka:
+        Brokers:
+    Organizations:
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+        # BlockValidation specifies what signatures must be included in the block
+        # from the orderer for the peer to validate it.
+        BlockValidation:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+
+################################################################################
+#
+#   CHANNEL
+#
+#   This section defines the values to encode into a config transaction or
+#   genesis block for channel related parameters.
+#
+################################################################################
+Channel: &ChannelDefaults
+    # Policies defines the set of policies at this level of the config tree
+    # For Channel policies, their canonical path is
+    #   /Channel/<PolicyName>
+    Policies:
+        # Who may invoke the 'Deliver' API
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        # Who may invoke the 'Broadcast' API
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        # By default, who may modify elements at this config level
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+
+    # Capabilities describes the channel level capabilities, see the
+    # dedicated Capabilities section elsewhere in this file for a full
+    # description
+    Capabilities:
+        <<: *ChannelCapabilities
 
 ################################################################################
 #
@@ -146,6 +230,7 @@ Capabilities:
 ################################################################################
 Profiles:
     FourOrgsOrdererGenesis:
+        <<: *ChannelDefaults
         Capabilities:
             <<: *ChannelCapabilities
         Orderer:
@@ -165,6 +250,7 @@ Profiles:
 
     FourOrgsChannel:
         Consortium: SampleConsortium
+        <<: *ChannelDefaults
         Application:
             <<: *ApplicationDefaults
             Organizations:
@@ -172,19 +258,27 @@ Profiles:
                - *Org2
                - *Org3
                - *Org4
+            Capabilities:
+              <<: *ApplicationCapabilities
 
     TwoOrgs12Channel:
         Consortium: SampleConsortium
+        <<: *ChannelDefaults
         Application:
             <<: *ApplicationDefaults
             Organizations:
                - *Org1
                - *Org2
+            Capabilities:
+              <<: *ApplicationCapabilities
 
     TwoOrgs34Channel:
         Consortium: SampleConsortium
+        <<: *ChannelDefaults
         Application:
             <<: *ApplicationDefaults
             Organizations:
                - *Org3
                - *Org4
+            Capabilities:
+              <<: *ApplicationCapabilities
